@@ -47,6 +47,10 @@ Where the sketchbook is:
 - macOS: `Documents/Arduino` in your home folder
 - Linux: `Arduino` in your home folder
 
+Afterwards, **do not update these libraries** when the Arduino IDE offers it ("Updates available" in the
+Library Manager, or the "Update all" notice). A newer version, for example a newer FastLED, may not work with
+MobaLedLib. Install a new bundle from this page instead when there is one.
+
 ### All at once (recommended)
 
 1. Download `MobaLedLib-Libraries-<version>.zip` from the release.
@@ -92,7 +96,7 @@ Every library keeps its own licence; it is inside its folder. TimerOne has none 
 
 The workflow `.github/workflows/compile.yml` builds the bundle and compiles MobaLedLib sketches with it on the
 board packages above: `LEDs_AutoProg` for Nano, ESP32 and Pico, the DCC, Selectrix and LocoNet interface
-sketches for the Nano, and the ATtiny85 servo and Charlieplexing modules. `LEDs_AutoProg` needs a
+sketches for the Nano, and the ATtiny85 Charlieplexing module, on Windows. `LEDs_AutoProg` needs a
 `LEDs_AutoProg.h`; the ones in `test/` are made by MobaLedLib Studio from its example layout.
 
 ## Making a release
