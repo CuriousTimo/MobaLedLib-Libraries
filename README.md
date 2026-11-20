@@ -12,7 +12,7 @@ Download them from the [latest release](../../releases/latest).
 | Library | Version | Needed for | Source |
 |---|---|---|---|
 | MobaLedLib | 3.5.0 | everything | Arduino library index |
-| FastLED | 3.9.13 | everything | Arduino library index |
+| FastLED | 3.9.12 (Jueff fork, 2025-01-30) | everything | github.com/Jueff/FastLED |
 | NmraDcc | 2.0.10 | DCC | Arduino library index |
 | AnalogScanner | master (2019-05-23) | analog inputs | github.com/merose/AnalogScanner |
 | ATtinySerialOut | 2.2.0 | ATtiny boards | Arduino library index |
@@ -26,15 +26,17 @@ Download them from the [latest release](../../releases/latest).
 | EspSoftwareSerial | 6.15.2 | ESP32 serial | github.com/Jueff/espsoftwareserial |
 | LocoNet2 | 2.2.3 | LocoNet (ESP32) | github.com/Jueff/LocoNet2 |
 
-Two differences from the Excel sheet:
+One difference from the Excel sheet: **TimerOne** — the sheet says 1.1; the library index has 1.1.0.
 
-- **FastLED**: the Excel tool installs a snapshot of a private fork (Jueff/FastLED, called "3.9.12"). Its
-  ESP32 fix is part of the official FastLED since 3.9.13, so this bundle has the official 3.9.13. The Excel
-  tool checks for exactly 3.9.12 and may offer to replace it.
-- **TimerOne**: the sheet says 1.1; the library index has 1.1.0.
+Three libraries come from forks by Jueff, as in the Excel tool, each at a fixed commit:
 
-EspSoftwareSerial is the official 6.15.2 plus one fix by Jürgen Winkler (no crash on an ESP32 when the serial
-port only sends). LocoNet2 is the tag `master` of Jueff/LocoNet2, which is release 2.2.3.
+- **FastLED** is Jueff/FastLED at `a55f336` (2025-01-30), which calls itself 3.9.12. It is FastLED 3.9.12
+  with Jueff's fixes for the ESP32 (RMT channel restart, multithreading) and support for the old ESP32
+  package 1.0.4. The official FastLED 3.9.13 has the RMT fix, but does not compile with ESP32 package 1.0.4
+  (`'cpu_hal_get_cycle_count' was not declared in this scope`), so the official version is not used.
+- **EspSoftwareSerial** is the official 6.15.2 plus one fix by Jueff (no crash on an ESP32 when the serial
+  port only sends).
+- **LocoNet2** is the tag `master` of Jueff/LocoNet2, which is release 2.2.3.
 
 ## Install
 
@@ -47,6 +49,10 @@ Where the sketchbook is:
 - macOS: `Documents/Arduino` in your home folder
 - Linux: `Arduino` in your home folder
 
+Afterwards, **do not update these libraries** when the Arduino IDE offers it ("Updates available" in the
+Library Manager, or the "Update all" notice). A newer version, for example a newer FastLED, may not work with
+MobaLedLib. Install a new bundle from this page instead when there is one.
+
 ### All at once (recommended)
 
 1. Download `MobaLedLib-Libraries-<version>.zip` from the release.
@@ -56,14 +62,14 @@ Where the sketchbook is:
 
 ### One library at a time
 
-1. Download the library's zip from the release, for example `FastLED-3.9.13.zip`.
+1. Download the library's zip from the release, for example `FastLED-3.9.12.zip`.
 2. In the Arduino IDE choose **Sketch › Include Library › Add .ZIP Library…** and pick the zip.
 
 ### With arduino-cli
 
 ```sh
 arduino-cli config set library.enable_unsafe_install true
-arduino-cli lib install --zip-path FastLED-3.9.13.zip
+arduino-cli lib install --zip-path FastLED-3.9.12.zip
 ```
 
 Repeat the second line for each zip, or unpack the bundle into the sketchbook as above.
@@ -92,7 +98,7 @@ Every library keeps its own licence; it is inside its folder. TimerOne has none 
 
 The workflow `.github/workflows/compile.yml` builds the bundle and compiles MobaLedLib sketches with it on the
 board packages above: `LEDs_AutoProg` for Nano, ESP32 and Pico, the DCC, Selectrix and LocoNet interface
-sketches for the Nano, and the ATtiny85 servo and Charlieplexing modules. `LEDs_AutoProg` needs a
+sketches for the Nano, and the ATtiny85 Charlieplexing module, on Windows. `LEDs_AutoProg` needs a
 `LEDs_AutoProg.h`; the ones in `test/` are made by MobaLedLib Studio from its example layout.
 
 ## Making a release

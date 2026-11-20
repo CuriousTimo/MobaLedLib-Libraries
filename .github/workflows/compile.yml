@@ -1,6 +1,10 @@
 # Builds the library bundle and compiles MobaLedLib sketches with it, on the board packages in the versions of
-# the Excel Program Generator 3.5.0. The sketch LEDs_AutoProg gets a LEDs_AutoProg.h made by MobaLedLib Studio
-# from its example layout (test/<platform>/).
+# the Excel Program Generator 3.5.0, with its board options, on Windows as the Excel tool does (the sketches
+# rely on a case-insensitive file system). LEDs_AutoProg gets a LEDs_AutoProg.h made by MobaLedLib Studio from
+# its example layout (test/<platform>/); the interface sketches get the header the Excel tool writes for them
+# (test/interface.h, Create_Config_Header_File in M08_Arduino.bas).
+# Not compiled: examples/80.Modules/01.ATTiny85_Servo, it includes Inp_Prtx.h, which MobaLedLib 3.5.0 has only
+# in 03.ATTiny85_Sound.
 name: compile
 
 on:
@@ -21,7 +25,10 @@ jobs:
 
   compile:
     needs: bundle
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
@@ -35,14 +42,17 @@ jobs:
             core: arduino:avr@1.8.6
             fqbn: arduino:avr:nano:cpu=atmega328
             sketch: examples/23_A.DCC_Interface
+            config: test/interface.h
           - name: Nano Selectrix interface
             core: arduino:avr@1.8.6
             fqbn: arduino:avr:nano:cpu=atmega328
             sketch: examples/23_A.Selectrix_Interface
+            config: test/interface.h
           - name: Nano LocoNet interface
             core: arduino:avr@1.8.6
             fqbn: arduino:avr:nano:cpu=atmega328
             sketch: examples/23_A.LNet_Interface
+            config: test/interface.h
           - name: ESP32 LEDs_AutoProg
             core: esp32:esp32@1.0.4
             fqbn: esp32:esp32:esp32:PSRAM=disabled,PartitionScheme=default,CPUFreq=240,FlashMode=qio,FlashFreq=80,FlashSize=4M,UploadSpeed=921600,DebugLevel=none
@@ -53,13 +63,9 @@ jobs:
             fqbn: rp2040:rp2040:rpipico:flash=2097152_0,freq=125,dbgport=Disabled,dbglvl=None
             sketch: extras/LEDs_Autoprog
             header: test/PICO/LEDs_AutoProg.h
-          - name: ATtiny85 servo
-            core: ATTinyCore:avr@1.5.2
-            fqbn: ATTinyCore:avr:attinyx5
-            sketch: examples/80.Modules/01.ATTiny85_Servo
           - name: ATtiny85 Charlieplexing
             core: ATTinyCore:avr@1.5.2
-            fqbn: ATTinyCore:avr:attinyx5
+            fqbn: ATTinyCore:avr:attinyx5:LTO=disable,TimerClockSource=default,chip=85,clock=16pll,eesave=aenable,bod=2v7,millis=enabled
             sketch: examples/80.Modules/02.CharlieplexTiny
     name: ${{ matrix.name }}
     steps:
@@ -68,15 +74,11 @@ jobs:
         with:
           name: dist
           path: dist/
-      # esp32 1.0.4 runs esptool.py with "python" and needs pyserial
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - run: pip install pyserial
       - uses: arduino/setup-arduino-cli@v2
       - name: Install the board package
         run: |
           arduino-cli config init
+          arduino-cli config set directories.user "$GITHUB_WORKSPACE/sketchbook"
           arduino-cli config add board_manager.additional_urls \
             https://raw.githubusercontent.com/Hardi-St/MobaLedLib_Docu/refs/heads/master/Tools/ATTinyCore/ATTinyCore_index.json \
             https://dl.espressif.com/dl/package_esp32_index.json \
@@ -85,16 +87,17 @@ jobs:
           arduino-cli core install "${{ matrix.core }}"
       - name: Install the libraries from the bundle
         run: |
-          mkdir -p "$HOME/Arduino"
-          unzip -q dist/MobaLedLib-Libraries-ci.zip -d bundle
-          mv bundle/libraries "$HOME/Arduino/libraries"
+          mkdir -p sketchbook
+          7z x -bd -obundle dist/MobaLedLib-Libraries-ci.zip > /dev/null
+          mv bundle/libraries sketchbook/libraries
           arduino-cli lib list
       - name: Compile
         run: |
           dir=$(basename "${{ matrix.sketch }}")
-          cp -r "$HOME/Arduino/libraries/MobaLedLib/${{ matrix.sketch }}" "work-$dir"
+          cp -r "sketchbook/libraries/MobaLedLib/${{ matrix.sketch }}" "work-$dir"
           if [ -n "${{ matrix.header }}" ]; then cp "${{ matrix.header }}" "work-$dir/LEDs_AutoProg.h"; fi
           # arduino-cli wants the folder named like the .ino
           ino=$(basename "work-$dir"/*.ino .ino)
+          if [ -n "${{ matrix.config }}" ]; then cp "${{ matrix.config }}" "work-$dir/$ino.h"; fi
           mv "work-$dir" "$ino"
           arduino-cli compile --fqbn "${{ matrix.fqbn }}" --warnings none "$ino"
