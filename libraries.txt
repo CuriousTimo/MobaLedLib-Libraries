@@ -1,0 +1,19 @@
+# The libraries MobaLedLib needs, in the versions of the Excel Program Generator 3.5.0 (its "Libraries" sheet).
+# One library per line: name, version, kind, source, checksum or commit.
+#   index  = zip from the Arduino library index, checked against its SHA-256
+#   git    = snapshot of a GitHub repository at a fixed commit
+# Exception to the Excel sheet: FastLED is the official 3.9.13 instead of Jueff/FastLED master ("3.9.12").
+MobaLedLib        3.5.0    index  https://downloads.arduino.cc/libraries/github.com/Hardi-St/MobaLedLib-3.5.0.zip            e071b6153a29c98912d7f4853aa75038d8972807c725f98e60b3fd2595a478b6
+FastLED           3.9.13   index  https://downloads.arduino.cc/libraries/github.com/FastLED/FastLED-3.9.13.zip               8e528cae9efc3fba1e735b28f856fbb4f5645721d2e0090fe79c5687f292c651
+NmraDcc           2.0.10   index  https://downloads.arduino.cc/libraries/github.com/mrrwa/NmraDcc-2.0.10.zip                 818e65bda5cb292b3b0f0ab93052635a9dd89ffd8dc8e2d1a6cbfaba2de99600
+AnalogScanner     master   git    https://github.com/merose/AnalogScanner.git                                                 dde45a757120abfa91260ea96c66135866b0af83
+ATtinySerialOut   2.2.0    index  https://downloads.arduino.cc/libraries/github.com/ArminJo/ATtinySerialOut-2.2.0.zip        c668c071c684ad9e833c806c4f61a841ed4c3229b8dea1b20b3ab6b7255e6715
+DIO2              1.6.0    index  https://downloads.arduino.cc/libraries/github.com/Locoduino/DIO2-1.6.0.zip                 de41e283dc55b43ea1321560697d06be420405185dfc589d0d189b8ac7a6829f
+EWMA              1.0.2    index  https://downloads.arduino.cc/libraries/github.com/jonnieZG/EWMA-1.0.2.zip                  49818e3bcf64825eee7cb17d670c39c7edcbbabe1bc7b29e1ec62bfc8bfd358d
+MobaTools         2.6.1    index  https://downloads.arduino.cc/libraries/github.com/MicroBahner/MobaTools-2.6.1.zip          53e7c11ce4438888e530e0e8f74ed1781f4a83329c65840abcb5a42fc651bc73
+LocoNet           1.1.13   index  https://downloads.arduino.cc/libraries/github.com/mrrwa/LocoNet-1.1.13.zip                 2da9636ec1d6d59290b550d99f464f39ab67227a5c4bf1226d84dd826b50ec7b
+TimerOne          1.1.0    index  https://downloads.arduino.cc/libraries/github.com/PaulStoffregen/TimerOne-1.1.0.zip        db98a2ed31428219fade87eeac5e4e638e6e4bc029add7ace2874734c87a2632
+WiFiManager       2.0.17   index  https://downloads.arduino.cc/libraries/github.com/tzapu/WiFiManager-2.0.17.zip             88b64b7dd123f30b2e7fec0f96f260abd354507dff347c038b2abfd929ba35e1
+U8g2              2.34.22  index  https://downloads.arduino.cc/libraries/github.com/olikraus/U8g2-2.34.22.zip              40d018f7b83ebfbd3bebbf7d47334cfb43e35983b1022752f83268e2613c5c7a
+EspSoftwareSerial 6.15.2   git    https://github.com/Jueff/espsoftwareserial.git                                              221a3ff078726f94c810ed3bc8d80d536f743455
+LocoNet2          2.2.3    git    https://github.com/Jueff/LocoNet2.git                                                       e07ef73af75d55def83f9f1afc6b866b1ab52957
