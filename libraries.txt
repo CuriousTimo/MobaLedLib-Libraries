@@ -2,9 +2,9 @@
 # One library per line: name, version, kind, source, checksum or commit.
 #   index  = zip from the Arduino library index, checked against its SHA-256
 #   git    = snapshot of a GitHub repository at a fixed commit
-# Exception to the Excel sheet: FastLED is the official 3.9.13 instead of Jueff/FastLED master ("3.9.12").
+# FastLED, EspSoftwareSerial and LocoNet2 are the forks by Jueff the Excel tool installs, at fixed commits.
 MobaLedLib        3.5.0    index  https://downloads.arduino.cc/libraries/github.com/Hardi-St/MobaLedLib-3.5.0.zip            e071b6153a29c98912d7f4853aa75038d8972807c725f98e60b3fd2595a478b6
-FastLED           3.9.13   index  https://downloads.arduino.cc/libraries/github.com/FastLED/FastLED-3.9.13.zip               8e528cae9efc3fba1e735b28f856fbb4f5645721d2e0090fe79c5687f292c651
+FastLED           3.9.12   git    https://github.com/Jueff/FastLED.git                                                        a55f336d789c04c2a789274daafe7185e79221c9
 NmraDcc           2.0.10   index  https://downloads.arduino.cc/libraries/github.com/mrrwa/NmraDcc-2.0.10.zip                 818e65bda5cb292b3b0f0ab93052635a9dd89ffd8dc8e2d1a6cbfaba2de99600
 AnalogScanner     master   git    https://github.com/merose/AnalogScanner.git                                                 dde45a757120abfa91260ea96c66135866b0af83
 ATtinySerialOut   2.2.0    index  https://downloads.arduino.cc/libraries/github.com/ArminJo/ATtinySerialOut-2.2.0.zip        c668c071c684ad9e833c806c4f61a841ed4c3229b8dea1b20b3ab6b7255e6715
